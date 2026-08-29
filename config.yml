@@ -6,8 +6,7 @@ model_list:
   - model_name: fable
     litellm_params:
       model: bedrock/qwen.qwen3-coder-480b-a35b-v1:0
-      max_tokens: 16384
-      temperature: 0.1
+      temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
@@ -18,8 +17,7 @@ model_list:
   - model_name: opus
     litellm_params:
       model: bedrock/minimax.minimax-m2.5
-      max_tokens: 8192
-      temperature: 0.2
+      temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
@@ -30,8 +28,7 @@ model_list:
   - model_name: sonnet
     litellm_params:
       model: bedrock/deepseek.v3.2
-      max_tokens: 8192
-      temperature: 0.2
+      temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
@@ -44,8 +41,7 @@ model_list:
   - model_name: haiku
     litellm_params:
       model: bedrock/deepseek.v3.2
-      max_tokens: 2048
-      temperature: 0.2
+      temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
