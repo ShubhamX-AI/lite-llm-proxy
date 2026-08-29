@@ -1,52 +1,56 @@
 model_list:
-  - model_name: sonnet
+
+  # ============================================================
+  # FABLE → Qwen3-Coder-480B (largest context, best for heavy/long tasks)
+  # ============================================================
+  - model_name: fable
     litellm_params:
-      model: bedrock/deepseek.v3.2
+      model: bedrock/qwen.qwen3-coder-480b-a35b-v1:0
+      max_tokens: 16384
+      temperature: 0.1
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
-  - model_name: haiku
-    litellm_params:
-      model: bedrock/qwen.qwen3-32b-v1:0
-      aws_region_name: os.environ/AWS_REGION_OPENCODE
-      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
-      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
-
+  # ============================================================
+  # OPUS → MiniMax M2.5 (complex reasoning tier)
+  # ============================================================
   - model_name: opus
     litellm_params:
       model: bedrock/minimax.minimax-m2.5
+      max_tokens: 8192
+      temperature: 0.2
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
-  - model_name: qwen3-coder-480b
-    litellm_params:
-      model: bedrock/qwen.qwen3-coder-480b-a35b-v1:0
-      aws_region_name: os.environ/AWS_REGION_OPENCODE
-      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
-      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
-
-  - model_name: qwen3-32b
-    litellm_params:
-      model: bedrock/qwen.qwen3-32b-v1:0
-      aws_region_name: os.environ/AWS_REGION_OPENCODE
-      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
-      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
-
-  - model_name: deepseek-v3.2
+  # ============================================================
+  # SONNET → DeepSeek V3.2 (daily coding driver)
+  # ============================================================
+  - model_name: sonnet
     litellm_params:
       model: bedrock/deepseek.v3.2
+      max_tokens: 8192
+      temperature: 0.2
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
-  - model_name: minimax-m2.5
+  # ============================================================
+  # HAIKU → DeepSeek V3.2 (NOT Qwen3-32B — see note above; 32K context
+  # is not viable for any Claude Code tier, including "fast" ones).
+  # Output capped low to keep this tier cheap/quick relative to Sonnet.
+  # ============================================================
+  - model_name: haiku
     litellm_params:
-      model: bedrock/minimax.minimax-m2.5
+      model: bedrock/deepseek.v3.2
+      max_tokens: 2048
+      temperature: 0.2
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
 litellm_settings:
   drop_params: true
+  request_timeout: 600
+  num_retries: 2
