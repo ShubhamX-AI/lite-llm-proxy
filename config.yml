@@ -2,37 +2,51 @@ model_list:
   - model_name: sonnet
     litellm_params:
       model: bedrock/deepseek.v3.2
-      aws_region_name: ap-south-1
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
   - model_name: haiku
     litellm_params:
       model: bedrock/qwen.qwen3-32b-v1:0
-      aws_region_name: ap-south-1
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
   - model_name: opus
     litellm_params:
       model: bedrock/minimax.minimax-m2.5
-      aws_region_name: ap-south-1
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
   - model_name: qwen3-coder-480b
     litellm_params:
       model: bedrock/qwen.qwen3-coder-480b-a35b-v1:0
-      aws_region_name: ap-south-1
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
   - model_name: qwen3-32b
     litellm_params:
       model: bedrock/qwen.qwen3-32b-v1:0
-      aws_region_name: ap-south-1
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
   - model_name: deepseek-v3.2
     litellm_params:
       model: bedrock/deepseek.v3.2
-      aws_region_name: ap-south-1
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
   - model_name: minimax-m2.5
     litellm_params:
       model: bedrock/minimax.minimax-m2.5
-      aws_region_name: ap-south-1
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
 
 litellm_settings:
   drop_params: true
