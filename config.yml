@@ -10,6 +10,7 @@ model_list:
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
+      additional_drop_params: ["stop"]
 
   # ============================================================
   # OPUS → MiniMax M2.5 (complex reasoning tier)
@@ -21,6 +22,7 @@ model_list:
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
+      additional_drop_params: ["stop"]
 
   # ============================================================
   # SONNET → DeepSeek V3.2 (daily coding driver)
@@ -32,6 +34,7 @@ model_list:
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
+      additional_drop_params: ["stop"]
 
   # ============================================================
   # HAIKU → DeepSeek V3.2 (NOT Qwen3-32B — see note above; 32K context
@@ -45,6 +48,7 @@ model_list:
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
+      additional_drop_params: ["stop"]
 
 litellm_settings:
   drop_params: true
