@@ -43,7 +43,7 @@ model_list:
   # ============================================================
   - model_name: haiku
     litellm_params:
-      model: bedrock/deepseek.v3.2
+      model: bedrock/zai.glm-5
       temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
