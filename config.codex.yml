@@ -1,0 +1,44 @@
+model_list:
+
+  # ============================================================
+  # CODEX FLAGSHIP → OpenAI GPT-5.6 Sol
+  # Global Bedrock cross-region inference profile for the most
+  # demanding coding and long-horizon reasoning work.
+  # ============================================================
+  - model_name: gpt-5.6-sol
+    litellm_params:
+      model: bedrock/global.openai.gpt-5.6-sol
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
+      additional_drop_params: ["stop"]
+
+  # ============================================================
+  # CODEX DEFAULT → OpenAI GPT-5.6 Terra
+  # Balanced capability, latency, and cost for everyday coding.
+  # ============================================================
+  - model_name: gpt-5.6-terra
+    litellm_params:
+      model: bedrock/global.openai.gpt-5.6-terra
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
+      additional_drop_params: ["stop"]
+
+  # ============================================================
+  # CODEX FAST → OpenAI GPT-5.6 Luna
+  # Fast, cost-efficient tier for routine implementation work.
+  # ============================================================
+  - model_name: gpt-5.6-luna
+    litellm_params:
+      model: bedrock/global.openai.gpt-5.6-luna
+      aws_region_name: os.environ/AWS_REGION_OPENCODE
+      aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
+      aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
+      additional_drop_params: ["stop"]
+
+litellm_settings:
+  drop_params: true
+  modify_params: true
+  request_timeout: 600
+  num_retries: 2

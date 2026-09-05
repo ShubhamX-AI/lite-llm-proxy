@@ -138,6 +138,54 @@ Expected for Luna: `input_cost_per_token=2e-07` ($0.20/M), `output_cost_per_toke
 - Region errors for Luna — Luna only in `us-east-1` / `us-east-2` / `us-west-2` via mantle; `global.` CRIS solves this from `ap-south-1`.
 - Timeout — bump `request_timeout` in `config.yml` or add `--timeout` at client.
 
+## Codex on Bedrock OpenAI models
+
+`config.codex.yml` is a separate proxy configuration for Codex. It preserves
+the Claude-tier aliases in `config.yml` and exposes the Bedrock OpenAI models
+under their native names.
+
+| Codex model | Bedrock global inference profile | Recommended use |
+| --- | --- | --- |
+| `gpt-5.6-sol` | `global.openai.gpt-5.6-sol` | Hard, long-horizon coding and reasoning |
+| `gpt-5.6-terra` | `global.openai.gpt-5.6-terra` | Daily coding default |
+| `gpt-5.6-luna` | `global.openai.gpt-5.6-luna` | Fast, cost-efficient routine work |
+
+Start the dedicated proxy with the same AWS credential variables described
+above. Set a proxy key so Codex can authenticate to LiteLLM:
+
+```bash
+export LITELLM_MASTER_KEY="sk-1234"
+uv run litellm --config config.codex.yml --port 4000
+```
+
+Add the following to `~/.codex/config.toml` (or a Codex profile) to route
+Codex through the proxy. `LITELLM_MASTER_KEY` must be present in the Codex
+process environment.
+
+```toml
+model_provider = "litellm"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+
+[model_providers.litellm]
+name = "LiteLLM Bedrock"
+base_url = "http://localhost:4000/v1"
+env_key = "LITELLM_MASTER_KEY"
+wire_api = "responses"
+```
+
+Override the selected model for a single session with, for example,
+`codex --model gpt-5.6-sol`. The proxy uses the Responses API end-to-end; it
+does not use a first-party OpenAI API key.
+
+The IAM principal needs `bedrock:InvokeModel` (and, when streaming is used,
+`bedrock:InvokeModelWithResponseStream`) for all three global inference
+profiles and the account's default Bedrock project.
+
 ## Config reference
 
-See `config.yml` for full config. `litellm_settings.drop_params` lets `stop` be dropped for models that do not support it. `litellm_settings.modify_params` enables Bedrock message normalization, including dummy assistant continuations required between consecutive user/tool blocks. All secrets stay in env vars, not in YAML.
+See `config.yml` for the Claude-tier configuration and `config.codex.yml` for
+the Codex configuration. `litellm_settings.drop_params` lets `stop` be dropped
+for models that do not support it. `litellm_settings.modify_params` enables
+Bedrock message normalization, including dummy assistant continuations required
+between consecutive user/tool blocks. All secrets stay in env vars, not in YAML.
