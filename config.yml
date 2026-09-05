@@ -1,12 +1,13 @@
 model_list:
 
   # ============================================================
-  # FABLE → Qwen3-Coder-480B (largest context, best for heavy/long tasks)
+  # FABLE → OpenAI GPT-5.6 Luna (fastest OpenAI tier via Bedrock CRIS, 272K ctx)
+  # via global cross-region inference profile — routes from any source
+  # region (including ap-south-1) to US capacity; AWS keys only, no OpenAI key.
   # ============================================================
   - model_name: fable
     litellm_params:
-      model: bedrock/qwen.qwen3-coder-480b-a35b-v1:0
-      temperature: 0.3
+      model: bedrock/global.openai.gpt-5.6-luna
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
@@ -37,13 +38,12 @@ model_list:
       additional_drop_params: ["stop"]
 
   # ============================================================
-  # HAIKU → OpenAI GPT-5.6 Luna (fastest OpenAI tier via Bedrock CRIS, 272K ctx)
-  # via global cross-region inference profile — routes from any source
-  # region (including ap-south-1) to US capacity; AWS keys only, no OpenAI key.
+  # HAIKU → Qwen3-Coder-480B (largest context, best for heavy/long tasks)
   # ============================================================
   - model_name: haiku
     litellm_params:
-      model: bedrock/global.openai.gpt-5.6-luna
+      model: bedrock/qwen.qwen3-coder-480b-a35b-v1:0
+      temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
