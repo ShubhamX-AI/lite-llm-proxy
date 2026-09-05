@@ -51,5 +51,6 @@ model_list:
 
 litellm_settings:
   drop_params: true
+  modify_params: true
   request_timeout: 600
   num_retries: 2

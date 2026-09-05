@@ -11,7 +11,7 @@ LiteLLM proxy that maps Claude Code tiers (`fable` / `opus` / `sonnet` / `haiku`
 | `sonnet`          | `bedrock/deepseek.v3.2`                   | Daily coding driver                                                                                                                    | `AWS_REGION_OPENCODE` |
 | `haiku`           | `bedrock/global.openai.gpt-5.6-luna`      | Fastest/cheapest OpenAI tier via global CRIS (272K ctx on Bedrock). Routes from any source region (e.g.`ap-south-1`) to US capacity. | `AWS_REGION_OPENCODE` |
 
-`litellm_settings`: `drop_params: true`, `request_timeout: 600`, `num_retries: 2`. `temperature: 0.3` and `additional_drop_params: ["stop"]` on every model.
+`litellm_settings`: `drop_params: true`, `modify_params: true`, `request_timeout: 600`, `num_retries: 2`. `modify_params` lets LiteLLM insert a dummy assistant continuation when Bedrock tool histories contain consecutive user/tool blocks. `temperature: 0.3` and `additional_drop_params: ["stop"]` on every model.
 
 ## Prerequisites
 
@@ -140,4 +140,4 @@ Expected for Luna: `input_cost_per_token=2e-07` ($0.20/M), `output_cost_per_toke
 
 ## Config reference
 
-See `config.yml` for full config. `litellm_settings.drop_params` lets `stop` be dropped for models that do not support it. All secrets stay in env vars, not in YAML.
+See `config.yml` for full config. `litellm_settings.drop_params` lets `stop` be dropped for models that do not support it. `litellm_settings.modify_params` enables Bedrock message normalization, including dummy assistant continuations required between consecutive user/tool blocks. All secrets stay in env vars, not in YAML.
