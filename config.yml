@@ -44,7 +44,6 @@ model_list:
   - model_name: haiku
     litellm_params:
       model: bedrock/global.openai.gpt-5.6-luna
-      temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY_OPENCODE
