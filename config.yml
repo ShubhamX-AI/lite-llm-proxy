@@ -37,13 +37,13 @@ model_list:
       additional_drop_params: ["stop"]
 
   # ============================================================
-  # HAIKU → DeepSeek V3.2 (NOT Qwen3-32B — see note above; 32K context
-  # is not viable for any Claude Code tier, including "fast" ones).
-  # Output capped low to keep this tier cheap/quick relative to Sonnet.
+  # HAIKU → OpenAI GPT-5.6 Luna (fastest OpenAI tier via Bedrock CRIS, 272K ctx)
+  # via global cross-region inference profile — routes from any source
+  # region (including ap-south-1) to US capacity; AWS keys only, no OpenAI key.
   # ============================================================
   - model_name: haiku
     litellm_params:
-      model: bedrock/zai.glm-5
+      model: bedrock/global.openai.gpt-5.6-luna
       temperature: 0.3
       aws_region_name: os.environ/AWS_REGION_OPENCODE
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID_OPENCODE
