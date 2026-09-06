@@ -114,12 +114,8 @@ curl http://localhost:4000/v1/chat/completions \
 # openai.api_key = "sk-1234"
 ```
 
-Claude Code / Codex example (`~/.codex/config.toml` or env):
-
-```toml
-model = "haiku"
-# base URL = http://localhost:4000/v1
-```
+Client-specific setup is described in [Claude Code and Codex](#claude-code-and-codex)
+below.
 
 ## 5. Verify Luna wiring
 
@@ -144,39 +140,83 @@ Expected for Luna: `input_cost_per_token=2e-07` ($0.20/M), `output_cost_per_toke
 the Claude-tier aliases in `config.yml` and exposes the Bedrock OpenAI models
 under their native names.
 
-| Codex model | Bedrock global inference profile | Recommended use |
-| --- | --- | --- |
-| `gpt-5.6-sol` | `global.openai.gpt-5.6-sol` | Hard, long-horizon coding and reasoning |
-| `gpt-5.6-terra` | `global.openai.gpt-5.6-terra` | Daily coding default |
-| `gpt-5.6-luna` | `global.openai.gpt-5.6-luna` | Fast, cost-efficient routine work |
+| Codex model       | Bedrock global inference profile | Recommended use                         |
+| ----------------- | -------------------------------- | --------------------------------------- |
+| `gpt-5.6-sol`   | `global.openai.gpt-5.6-sol`    | Hard, long-horizon coding and reasoning |
+| `gpt-5.6-terra` | `global.openai.gpt-5.6-terra`  | Daily coding default                    |
+| `gpt-5.6-luna`  | `global.openai.gpt-5.6-luna`   | Fast, cost-efficient routine work       |
 
 Start the dedicated proxy with the same AWS credential variables described
-above. Set a proxy key so Codex can authenticate to LiteLLM:
+above. The normal/Bedrock switchers below assume an unauthenticated local proxy:
 
 ```bash
-export LITELLM_MASTER_KEY="sk-1234"
 uv run litellm --config config.codex.yml --port 4000
 ```
 
-Add the following to `~/.codex/config.toml` (or a Codex profile) to route
-Codex through the proxy. `LITELLM_MASTER_KEY` must be present in the Codex
-process environment.
+For a proxy protected with `LITELLM_MASTER_KEY`, set that key when starting
+LiteLLM and use the same value in the client token variables instead of
+`anything`.
+
+## Claude Code and Codex
+
+Add the following functions to `~/.zshrc` or `~/.bashrc`, then reload your
+shell (`source ~/.zshrc` or `source ~/.bashrc`). The `*-normal` commands remove
+the local proxy settings and use each CLI's usual first-party authentication.
+The `*-bedrock` commands route through the local LiteLLM proxy.
+
+```bash
+codex-normal() {
+  unset OPENAI_API_KEY
+  codex --profile normal "$@"
+}
+
+codex-bedrock() {
+  export OPENAI_API_KEY="anything"
+  codex --profile bedrock "$@"
+}
+
+claude-normal() {
+  unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN \
+    ANTHROPIC_DEFAULT_FABLE_MODEL ANTHROPIC_DEFAULT_OPUS_MODEL \
+    ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL
+  claude "$@"
+}
+
+claude-bedrock() {
+  export ANTHROPIC_BASE_URL="http://localhost:4000"
+  export ANTHROPIC_AUTH_TOKEN="anything"
+  export ANTHROPIC_DEFAULT_FABLE_MODEL="fable"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="opus"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="sonnet"
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL="haiku"
+  claude "$@"
+}
+```
+
+Configure Codex's named profiles in the user-level
+`~/.codex/config.toml`. The `normal` profile leaves Codex on its first-party
+configuration; the `bedrock` profile selects LiteLLM. Do not put provider or
+profile settings in a repository-local `.codex/config.toml`.
 
 ```toml
-model_provider = "litellm"
-model = "gpt-5.6-terra"
-model_reasoning_effort = "medium"
-
 [model_providers.litellm]
 name = "LiteLLM Bedrock"
 base_url = "http://localhost:4000/v1"
-env_key = "LITELLM_MASTER_KEY"
+env_key = "OPENAI_API_KEY"
 wire_api = "responses"
+
+[profiles.normal]
+
+[profiles.bedrock]
+model_provider = "litellm"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
 ```
 
-Override the selected model for a single session with, for example,
-`codex --model gpt-5.6-sol`. The proxy uses the Responses API end-to-end; it
-does not use a first-party OpenAI API key.
+Use `codex-bedrock --model gpt-5.6-sol` to choose another proxy model for one
+session. The proxy uses the Responses API end-to-end; `OPENAI_API_KEY=anything`
+is only a placeholder for an unauthenticated local LiteLLM proxy, not a
+first-party OpenAI API key.
 
 The IAM principal needs `bedrock:InvokeModel` (and, when streaming is used,
 `bedrock:InvokeModelWithResponseStream`) for all three global inference
